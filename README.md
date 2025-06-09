@@ -1,0 +1,13 @@
+- different files for different models
+- to get stock data, take input of stock and time
+- models
+    - moving averages
+    - BS model
+    - ML model that incoporates all the other models then sees which factors contribute the most to the stock increasing or not
+- data
+    - volume 
+    - price
+- scrapping discord
+    - first just all the unique names of the stocks (use random time 1pm GMT)
+    - distinguish first time post of the stocks
+

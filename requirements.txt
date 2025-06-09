@@ -1,0 +1,10 @@
+numpy
+pandas
+matplotlib
+seaborn
+yfinance
+arc
+ib_insync
+datetime
+statsmodels
+arch
