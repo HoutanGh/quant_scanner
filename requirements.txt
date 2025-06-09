@@ -7,4 +7,4 @@ arc
 ib_insync
 datetime
 statsmodels
-arch
+archs

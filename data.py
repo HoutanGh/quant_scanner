@@ -1,38 +1,74 @@
 import pandas as pd
 import yfinance as yf
 from datetime import datetime, timedelta
+import matplotlib.pyplot as plt
 
-def format_yfinance_to_ikbr(ticker, end, start=None):
+def fetch_yfinance_data(ticker, end, start=None):
     if start is None:
         end_dt = pd.to_datetime(end)
         start = (end_dt - timedelta(days=365)).strftime('%Y-%m-%d')
-    df = yf.download(ticker, start=start, end=end)
     
-    # lower case for IKBR
-    df = df.rename(columns={
+    # Fetch daily data (for 60d, 30d, 7d, 1d MAs)
+    daily_df = yf.download(ticker, start=start, end=end, interval="1d")
+    daily_df = daily_df.rename(columns={
         "Open": "open",
         "High": "high",
         "Low": "low",
         "Close": "close",
         "Volume": "volume"
     })
+    if "Adj Close" in daily_df.columns:
+        daily_df = daily_df.drop(columns=["Adj Close"])
+    daily_df.index.name = "date"
+    daily_df = daily_df.reset_index()
+    daily_df["averageWAP"] = None
+    daily_df["barCount"] = None
+    daily_df = daily_df[["date", "open", "high", "low", "close", "volume", "averageWAP", "barCount"]]
 
-    # can also drop Adj Close but might even add this when getting data from IKBR  
-    if "Adj Close" in df.columns:
-        df = df.drop(columns=["Adj Close"])
+    # Fetch minute data (max 7 days)
+    end_dt = pd.to_datetime(end)
+    minute_start = (end_dt - timedelta(days=6)).strftime('%Y-%m-%d')
+    minute_df = yf.download(
+        ticker,
+        start=minute_start,
+        end=end,
+        interval="1m"
+    )
+    minute_df = minute_df.rename(columns={
+        "Open": "open",
+        "High": "high",
+        "Low": "low",
+        "Close": "close",
+        "Volume": "volume"
+    })
+    if "Adj Close" in minute_df.columns:
+        minute_df = minute_df.drop(columns=["Adj Close"])
+    minute_df.index.name = "date"
+    minute_df = minute_df.reset_index()
+    minute_df["averageWAP"] = None
+    minute_df["barCount"] = None
+    minute_df = minute_df[["date", "open", "high", "low", "close", "volume", "averageWAP", "barCount"]]
 
-    # Reset index if you want a column, or keep DatetimeIndex if matching to IBKR post-processed
-    df.index.name = "date"
-    df = df.reset_index()  # IBKR's util.df(bars) is a column, not an index
-    
-    # dummy columns for IBKR's optional fields
-    df["averageWAP"] = None
-    df["barCount"] = None
+    return daily_df, minute_df
 
-    # Reorder to IBKR style
-    df = df[["date", "open", "high", "low", "close", "volume", "averageWAP", "barCount"]]
-    
-    return df
+# Example usage:
+daily_df, minute_df = fetch_yfinance_data("AAPL", "2025-06-09")
+print(daily_df.head())
+print(minute_df.head())
 
-df = format_yfinance_to_ikbr("AAPL", "2024-01-01")
-print(df.head())
+# Plot daily close and 7-day MA
+plt.figure(figsize=(12, 5))
+plt.plot(daily_df['date'], daily_df['close'], label='Daily Close')
+plt.plot(daily_df['date'], daily_df['close'].rolling(7).mean(), label='7-Day MA')
+plt.title('Daily Close and 7-Day MA')
+plt.legend()
+plt.show()
+
+# Plot minute close and 60-min MA (on last 2 days for clarity)
+recent_minute = minute_df[minute_df['date'] > minute_df['date'].max() - pd.Timedelta(days=2)]
+plt.figure(figsize=(12, 5))
+plt.plot(recent_minute['date'], recent_minute['close'], label='Minute Close')
+plt.plot(recent_minute['date'], recent_minute['close'].rolling(60).mean(), label='60-Min MA')
+plt.title('Minute Close and 60-Min MA (Last 2 Days)')
+plt.legend()
+plt.show()

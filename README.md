@@ -2,6 +2,7 @@
 - to get stock data, take input of stock and time
 - models
     - moving averages
+        - can only do up to 60 days with yfinance
     - BS model
     - ML model that incoporates all the other models then sees which factors contribute the most to the stock increasing or not
 - data
