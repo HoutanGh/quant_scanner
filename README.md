@@ -7,6 +7,7 @@
     - ML model that incoporates all the other models then sees which factors contribute the most to the stock increasing or not
 - data
     - volume 
+    - voume increase/decrease rate
     - price
 - scrapping discord
     - first just all the unique names of the stocks (use random time 1pm GMT)
