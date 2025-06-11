@@ -14,4 +14,4 @@
 - scrapping discord
     - first just all the unique names of the stocks (use random time 1pm GMT)
     - distinguish first time post of the stocks
-
+### Maybe end point of this program is to get weights of variables that have the biggest affect, then use these weights for a different model that says buy or not?
