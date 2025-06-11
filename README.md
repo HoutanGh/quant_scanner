@@ -4,6 +4,8 @@
 - models
     - moving averages
         - can only do up to 60 days with yfinance
+        - for prices
+        - for volume (plot this see if it looks cool)
     - BS model
     - ML model that incoporates all the other models then sees which factors contribute the most to the stock increasing or not
     - pairs trading that finds connections between pennies (seems pointless tho)
