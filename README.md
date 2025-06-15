@@ -2,11 +2,14 @@
 - to get stock data, take input of stock and time
     - doesn't really need to take time as input just date because the data for the time is in the df
 - models
-    - moving averages
+    - trends
+        - can maybe also include moving average models but I don't think this is the same
+        - have the trends for the 1 year, 60 days, 1 month, 1 week, 1 day, 1 hour, 1 min
         - can only do up to 60 days with yfinance
         - for prices
         - for volume (plot this see if it looks cool)
     - BS model
+        - if the options of the stock are underpriced or not and if these factors contribute 
     - ML model that incoporates all the other models then sees which factors contribute the most to the stock increasing or not
     - pairs trading that finds connections between pennies (seems pointless tho)
 - data
@@ -17,3 +20,6 @@
     - first just all the unique names of the stocks (use random time 1pm GMT)
     - distinguish first time post of the stocks
 ### Maybe end point of this program is to get weights of variables that have the biggest affect, then use these weights for a different model that says buy or not?
+
+- implied volatility, realised volatility and use them to make returns on earnings
+- get name of stocks that have appeared more than twice (not in the same week posting)
