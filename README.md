@@ -19,7 +19,9 @@
 - scrapping discord
     - first just all the unique names of the stocks (use random time 1pm GMT)
     - distinguish first time post of the stocks
+    - just get all the stocks that are posted at 1 uk time
 ### Maybe end point of this program is to get weights of variables that have the biggest affect, then use these weights for a different model that says buy or not?
 
 - implied volatility, realised volatility and use them to make returns on earnings
 - get name of stocks that have appeared more than twice (not in the same week posting)
+- want to plot volume against price, then rate of volume increase against price (maybe in analysis file)
