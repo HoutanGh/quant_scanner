@@ -1,6 +1,9 @@
 import pandas as pd
 import yfinance as yf
 from datetime import timedelta
+import warnings
+
+warnings.filterwarnings("ignore", category=FutureWarning)
 
 def fetch_yfinance_data(ticker, end, start=None):
     exchange_tz = "America/New_York"  # Adjust if you want to support other exchanges
@@ -10,7 +13,7 @@ def fetch_yfinance_data(ticker, end, start=None):
         start = (end_dt - timedelta(days=365)).strftime('%Y-%m-%d')
     
     # Fetch daily data
-    daily_df = yf.download(ticker, start=start, end=end, interval="1d")
+    daily_df = yf.download(ticker, start=start, end=end, interval="1d", auto_adjust=True)
     daily_df = daily_df.rename(columns={
         "Open": "open",
         "High": "high",
@@ -41,7 +44,8 @@ def fetch_yfinance_data(ticker, end, start=None):
         ticker,
         start=minute_start,
         end=end,
-        interval="1m"
+        interval="1m",
+        auto_adjust=True
     )
     minute_df = minute_df.rename(columns={
         "Open": "open",
