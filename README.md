@@ -25,3 +25,5 @@
 - implied volatility, realised volatility and use them to make returns on earnings
 - get name of stocks that have appeared more than twice (not in the same week posting)
 - want to plot volume against price, then rate of volume increase against price (maybe in analysis file)
+
+[ ] just look a specific stock first at the time is posting and see what information can extract
