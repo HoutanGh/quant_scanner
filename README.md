@@ -1,3 +1,26 @@
+### data.py
+- data of stocks put into the format you get when you use IKBR API
+- data is split into daily and minute dfs so that we can use different time ranges accurately
+- considering where to calculate the extra features in data.py or in the models (rate of trading volume, price changes by time)
+
+### trends.py
+- calculating the trends of different times ranges
+- for price
+- for volume
+[ ] price changes by time
+[ ] volume changes by time
+
+### models
+[ ] mean reversion models
+[ ] moving average models
+[ ] BS models
+
+### dicord.py
+- scrap discord for list of penny stocks
+- seeing if it is possible to automate
+
+---
+
 - different files for different models
 - to get stock data, take input of stock and time
     - doesn't really need to take time as input just date because the data for the time is in the df
@@ -25,8 +48,5 @@
 - implied volatility, realised volatility and use them to make returns on earnings
 - get name of stocks that have appeared more than twice (not in the same week posting)
 - want to plot volume against price, then rate of volume increase against price (maybe in analysis file)
-<<<<<<< HEAD
-=======
 
 [ ] just look a specific stock first at the time is posting and see what information can extract
->>>>>>> 66b4525e4c0e0d8dce834c300898f17fac8e865d
