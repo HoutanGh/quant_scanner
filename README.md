@@ -14,6 +14,7 @@
 - [ ] mean reversion models
 - [ ] moving average models
 - [ ] BS models
+- [ ] model that sees if the stock goes up in the first 5mins, 10mins, 15mins, 30mins, 1 hour then incrememts, not sure
 
 ### dicord.py
 - scrap discord for list of penny stocks
