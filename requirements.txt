@@ -8,3 +8,5 @@ ib_insync
 datetime
 statsmodels
 archs
+jsonlib
+ace-tools
