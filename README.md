@@ -8,12 +8,12 @@
 - for price
 - for volume
 - [ ] price changes by time
-[ ] volume changes by time
+- [ ] volume changes by time
 
 ### models
-[ ] mean reversion models
-[ ] moving average models
-[ ] BS models
+- [ ] mean reversion models
+- [ ] moving average models
+- [ ] BS models
 
 ### dicord.py
 - scrap discord for list of penny stocks
@@ -49,4 +49,4 @@
 - get name of stocks that have appeared more than twice (not in the same week posting)
 - want to plot volume against price, then rate of volume increase against price (maybe in analysis file)
 
-[ ] just look a specific stock first at the time is posting and see what information can extract
+- [ ] just look a specific stock first at the time is posting and see what information can extract
