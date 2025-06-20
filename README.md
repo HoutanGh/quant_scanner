@@ -7,7 +7,7 @@
 - calculating the trends of different times ranges
 - for price
 - for volume
-[ ] price changes by time
+- [ ] price changes by time
 [ ] volume changes by time
 
 ### models
