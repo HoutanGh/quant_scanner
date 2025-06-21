@@ -17,9 +17,12 @@
 - [ ] model that sees if the stock goes up in the first 5mins, 10mins, 15mins, 30mins, 1 hour then incrememts, not sure
 
 ### dicord.py
-- scrap discord for list of penny stocks
-- seeing if it is possible to automate
+- [x] obtain the list of stocks posted in discord channel
+- [ ] get count of stocks
+- maybe can see if there is uptick in the stocks going up with 2nd or 3rd time they have been posted
 
+### analysis
+- [ ] look at the stocks if they have a spike of volume before they are bought - might help indicate which ones they are gonna notify users with
 ---
 
 - different files for different models
