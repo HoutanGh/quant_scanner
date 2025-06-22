@@ -2,7 +2,7 @@
 - data of stocks put into the format you get when you use IKBR API
 - data is split into daily and minute dfs so that we can use different time ranges accurately
 - considering where to calculate the extra features in data.py or in the models (rate of trading volume, price changes by time)
-
+- [ ] see if you can connect to IKBR API in normal windows not WSL2
 ### trends.py
 - calculating the trends of different times ranges
 - for price
