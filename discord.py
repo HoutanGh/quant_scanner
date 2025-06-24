@@ -2,6 +2,8 @@ import pandas as pd
 import re
 import os
 import matplotlib.pyplot as plt
+from datetime import datetime
+import pytz
 
 file_path = 'discord_tickers.txt'
 csv_path = 'discord_tickers.csv'
@@ -32,14 +34,25 @@ while i < len(lines):
 
 df = pd.DataFrame(entries)
 df['Posted'] = pd.to_datetime(df['Posted'], format='%d/%m/%Y %H:%M', errors='coerce')
+
+# Add US Eastern Time column
+# Assuming original times are UTC, convert to US Eastern Time
+eastern = pytz.timezone('US/Eastern')
+# First set the timezone to UTC (assuming that's the original timezone)
+df['Posted_UTC'] = df['Posted'].dt.tz_localize('UTC')
+# Then convert to US Eastern Time
+df['Posted_US_ET'] = df['Posted_UTC'].dt.tz_convert(eastern)
+
 df = df.sort_values('Posted').reset_index(drop=True)
 
 # Only create the CSV if it doesn't already exist
-if not os.path.exists(csv_path):
-    df.to_csv(csv_path, index=False)
-    print(f"CSV created: {csv_path}")
-else:
-    print(f"CSV already exists: {csv_path}")
+# if not os.path.exists(csv_path):
+#     df.to_csv(csv_path, index=False)
+#     print(f"CSV created: {csv_path}")
+# else:
+#     print(f"CSV already exists: {csv_path}")
+
+df.to_csv(csv_path, index=False)
 
 print(df.head())
 print(len(df))  # total entries

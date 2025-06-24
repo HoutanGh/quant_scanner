@@ -4,46 +4,62 @@ import pandas as pd
 import numpy as np
 from data import fetch_yfinance_data
 
-# Example: fetch data for AAPL
-stock = "GME"
-daily_df, minute_df = fetch_yfinance_data(stock, "2025-06-09")
+stock = "OKYO"
+daily_df, minute_df = fetch_yfinance_data(stock, "2025-06-21")
 
-# Convert date to timezone-naive for plotting
-daily_df['plot_date'] = pd.to_datetime(daily_df['date']).dt.tz_localize(None)
+minute_df['plot_date'] = pd.to_datetime(minute_df['date']).dt.tz_localize(None)
 
-# Plot daily price vs volume
-fig, ax1 = plt.subplots(figsize=(12, 6))
+# Filter for June 19th and 20th
+start_date = pd.to_datetime("2025-06-19").date()
+end_date = pd.to_datetime("2025-06-20").date()
+mask = (minute_df['plot_date'].dt.date >= start_date) & (minute_df['plot_date'].dt.date <= end_date)
+day_df = minute_df[mask]
+print(day_df['plot_date'].min(), day_df['plot_date'].max())
 
-# Format the x-axis to show dates nicely
-ax1.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d'))
-ax1.xaxis.set_major_locator(mdates.WeekdayLocator(interval=2))
+# Print stats for the selected date range
+print(f"Date range: {start_date} to {end_date}")
+print(f"Total data points: {len(day_df)}")
+print(f"Zero volume entries: {(day_df['volume'] == 0).sum()}")
+print(f"Total volume: {day_df['volume'].sum()}")
+
+fig, ax1 = plt.subplots(figsize=(16, 7))
+
+# Plot close price
+ax1.plot(day_df['plot_date'], day_df['close'], color='tab:blue', label='Close Price')
+ax1.set_xlabel('Time')
+ax1.set_ylabel('Price', color='tab:blue')
+ax1.tick_params(axis='y', labelcolor='tab:blue')
+
+# Format x-axis for time of day
+ax1.xaxis.set_major_locator(mdates.DayLocator())
+ax1.xaxis.set_minor_locator(mdates.HourLocator(interval=3))
+ax1.xaxis.set_major_formatter(mdates.DateFormatter('%m-%d'))
+ax1.xaxis.set_minor_formatter(mdates.DateFormatter('%H:%M'))
 plt.xticks(rotation=45)
 
-# Plot the price line
-color = 'tab:blue'
-ax1.set_xlabel('Date')
-ax1.set_ylabel('Close Price ($)', color=color)
-ax1.plot(daily_df['plot_date'], daily_df['close'], color=color, label='Close Price')
-ax1.tick_params(axis='y', labelcolor=color)
+# Add date separators
+for date in pd.date_range(start=start_date, end=end_date):
+    date = pd.Timestamp(date)
+    ax1.axvline(x=date, color='gray', linestyle='--', alpha=0.5)
 
-# Use a different approach for volume visualization
+# Plot volume on secondary y-axis
 ax2 = ax1.twinx()
-color = 'tab:orange'
-ax2.set_ylabel('Volume', color=color)
+ax2.plot(
+    day_df['plot_date'],
+    day_df['volume'],
+    color='tab:orange',
+    label='Volume',
+    linewidth=1.5,
+    alpha=0.8
+)
+ax2.set_ylabel('Volume', color='tab:orange')
+ax2.tick_params(axis='y', labelcolor='tab:orange')
 
-# Convert volume to numpy array and ensure it's 1-dimensional
-volume = daily_df['volume'].fillna(0).to_numpy()
-dates = daily_df['plot_date'].to_numpy()
+# Add legends and title
+lines_1, labels_1 = ax1.get_legend_handles_labels()
+lines_2, labels_2 = ax2.get_legend_handles_labels()
+ax1.legend(lines_1 + lines_2, labels_1 + labels_2, loc='upper left')
 
-# Plot volume as a step chart with fill
-ax2.step(dates, volume, color=color, alpha=0.7, where='mid', label='Volume')
-ax2.tick_params(axis='y', labelcolor=color)
-
-# Add a legend
-lines1, labels1 = ax1.get_legend_handles_labels()
-lines2, labels2 = ax2.get_legend_handles_labels()
-ax1.legend(lines1 + lines2, labels1 + labels2, loc='upper left')
-
-plt.title(f"{stock} Daily Close Price and Volume")
-fig.tight_layout()
+plt.title(f"{stock} Minute-by-Minute Price and Volume (June 19-20, 2025)")
+plt.tight_layout()
 plt.show()

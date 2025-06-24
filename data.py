@@ -45,7 +45,8 @@ def fetch_yfinance_data(ticker, end, start=None):
         start=minute_start,
         end=end,
         interval="1m",
-        auto_adjust=True
+        auto_adjust=True,
+        prepost=True
     )
     minute_df = minute_df.rename(columns={
         "Open": "open",
@@ -93,3 +94,16 @@ def fetch_yfinance_data(ticker, end, start=None):
 # plt.title('Minute Close and 60-Min MA (Last 2 Days)')
 # plt.legend()
 # plt.show()
+
+stock = "OKYO"
+daily_df, minute_df = fetch_yfinance_data(stock, "2025-06-21")
+
+minute_df['plot_date'] = pd.to_datetime(minute_df['date']).dt.tz_localize(None)
+# print(minute_df.head())
+# Filter for June 20th only
+target_date = pd.to_datetime("2025-06-20").date()
+# print(target_date)
+mask = minute_df['plot_date'].dt.date == target_date
+day_df = minute_df[mask]
+
+print(day_df['plot_date'].min(), day_df['plot_date'].max())
