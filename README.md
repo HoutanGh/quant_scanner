@@ -3,6 +3,7 @@
 - data is split into daily and minute dfs so that we can use different time ranges accurately
 - considering where to calculate the extra features in data.py or in the models (rate of trading volume, price changes by time)
 - [ ] see if you can connect to IKBR API in normal windows not WSL2
+
 ### trends.py
 - calculating the trends of different times ranges
 - for price
@@ -18,7 +19,7 @@
 
 ### dicord.py
 - [x] obtain the list of stocks posted in discord channel
-- [ ] get count of stocks
+- [x] get count of stocks
 - maybe can see if there is uptick in the stocks going up with 2nd or 3rd time they have been posted
 
 ### analysis
