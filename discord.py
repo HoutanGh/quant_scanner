@@ -35,44 +35,58 @@ while i < len(lines):
 df = pd.DataFrame(entries)
 df['Posted'] = pd.to_datetime(df['Posted'], format='%d/%m/%Y %H:%M', errors='coerce')
 
-# Add US Eastern Time column
-# Assuming original times are UTC, convert to US Eastern Time
+# Add timezone columns with proper names from the start
 eastern = pytz.timezone('US/Eastern')
-# First set the timezone to UTC (assuming that's the original timezone)
-df['Posted_UTC'] = df['Posted'].dt.tz_localize('UTC')
-# Then convert to US Eastern Time
-df['Posted_US_ET'] = df['Posted_UTC'].dt.tz_convert(eastern)
+df['GMT'] = df['Posted'].dt.tz_localize('UTC')
+df['EST'] = df['GMT'].dt.tz_convert(eastern)
 
-df = df.sort_values('Posted').reset_index(drop=True)
+# Add readable date and day columns
+df['Date'] = df['GMT'].dt.strftime('%Y-%m-%d')
+df['Day_of_Week'] = df['GMT'].dt.strftime('%A')
+df['GMT'] = df['GMT'].dt.strftime('%H:%M')
+df['EST'] = df['EST'].dt.strftime('%H:%M')
 
-# Only create the CSV if it doesn't already exist
-# if not os.path.exists(csv_path):
-#     df.to_csv(csv_path, index=False)
-#     print(f"CSV created: {csv_path}")
-# else:
-#     print(f"CSV already exists: {csv_path}")
+# Keep only the columns we want
+df = df[['Ticker', 'Date', 'Day_of_Week', 'GMT', 'EST']].copy()
 
+# Save the CSV
 df.to_csv(csv_path, index=False)
 
+print("Readable DataFrame:")
 print(df.head())
-print(len(df))  # total entries
-print(len(df['Ticker'].unique()))  # unique tickers
+print(f"Total entries: {len(df)}")
+print(f"Unique tickers: {len(df['Ticker'].unique())}")
 
-# Extract day of week (Monday, Tuesday, etc.)
-df['DayOfWeek'] = df['Posted'].dt.day_name()
+# Extract day of week for analysis - need to recreate this since we removed Posted column
+df_temp = pd.DataFrame(entries)
+df_temp['Posted'] = pd.to_datetime(df_temp['Posted'], format='%d/%m/%Y %H:%M', errors='coerce')
+df_temp['DayOfWeek'] = df_temp['Posted'].dt.day_name()
 
 # Count number of posts per day of week
-counts = df['DayOfWeek'].value_counts()
+counts = df_temp['DayOfWeek'].value_counts()
 
 # Reindex to get days in correct order
 days_order = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 counts = counts.reindex(days_order)
 
-# Plot bar chart
-plt.figure(figsize=(10, 5))
-counts.plot(kind='bar')
-plt.xlabel('Day of Week')
-plt.ylabel('Number of Tickers Posted')
-plt.title('Number of Tickers Posted By Day of Week')
-plt.tight_layout()
-plt.show()
+# # Plot bar chart
+# plt.figure(figsize=(10, 5))
+# counts.plot(kind='bar')
+# plt.xlabel('Day of Week')
+# plt.ylabel('Number of Tickers Posted')
+# plt.title('Number of Tickers Posted By Day of Week')
+# plt.tight_layout()
+# plt.show()
+
+# Show top tickers by frequency
+print(f"\nMost frequent tickers:")
+ticker_counts = df['Ticker'].value_counts().head(20)
+for ticker, count in ticker_counts.items():
+    print(f"  {ticker}: {count} posts")
+
+# Show posting patterns by day
+print(f"\nPosting patterns by day:")
+day_counts = df['Day_of_Week'].value_counts().reindex(days_order)
+for day, count in day_counts.items():
+    if pd.notna(count):
+        print(f"  {day}: {int(count)} posts")
