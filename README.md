@@ -24,6 +24,10 @@
 
 ### analysis
 - [ ] look at the stocks if they have a spike of volume before they are bought - might help indicate which ones they are gonna notify users with
+
+### IDEAS
+- maybe look at options of the stock to see if there is correlation between stocks going down
+- change stock price to %change? or somehow normalise so can compare stocks?
 ---
 
 - different files for different models
