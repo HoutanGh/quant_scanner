@@ -10,7 +10,7 @@
 - for volume
 - [ ] price changes by time
 - [ ] volume changes by time
-
+- [ ] fill in stuff that helps data look better
 ### models
 - [ ] mean reversion models
 - [ ] moving average models
