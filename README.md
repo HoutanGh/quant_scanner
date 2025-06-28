@@ -23,8 +23,8 @@
 - maybe can see if there is uptick in the stocks going up with 2nd or 3rd time they have been posted
 
 ### analysis
-- [ ] look at the stocks if they have a spike of volume before they are bought - might help indicate which ones they are gonna notify users with
-
+- [x] look at the stocks if they have a spike of volume before they are bought - might help indicate which ones they are gonna notify users with
+- [ ] make a list of all the discord stocks in IKBR
 ### IDEAS
 - maybe look at options of the stock to see if there is correlation between stocks going down
 - change stock price to %change? or somehow normalise so can compare stocks?
