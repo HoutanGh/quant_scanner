@@ -206,7 +206,7 @@ def get_ticker_info(ticker):
 
 if __name__ == "__main__":
     # Example usage when script is run directly
-    stock = "AMIX"
+    stock = "VUZI"
     print(get_ticker_info(stock))
     ticker, date, time = get_ticker_info(stock)
     if ticker:
