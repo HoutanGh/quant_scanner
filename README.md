@@ -27,6 +27,7 @@
 - [ ] make a list of all the discord stocks in IKBR
 - [ ] have an option to extend the date range in the function
 - [ ] maybe command line input of stock instead
+
 ### IDEAS
 - maybe look at options of the stock to see if there is correlation between stocks going down
 - change stock price to %change? or somehow normalise so can compare stocks?
