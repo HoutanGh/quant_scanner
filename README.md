@@ -17,9 +17,10 @@
 - [ ] BS models
 - [ ] model that sees if the stock goes up in the first 5mins, 10mins, 15mins, 30mins, 1 hour then incrememts, not sure
 
-### dicord.py
+### discord.py
 - [x] obtain the list of stocks posted in discord channel
 - [x] get count of stocks
+- [ ] add command line functionality so can add new stocks
 - maybe can see if there is uptick in the stocks going up with 2nd or 3rd time they have been posted
 
 ### analysis
@@ -27,6 +28,8 @@
 - [ ] make a list of all the discord stocks in IKBR
 - [ ] have an option to extend the date range in the function
 - [ ] maybe command line input of stock instead
+- [ ] functionality to see different stocks at the same time
+- [ ] functionality to see the same stock at different times
 
 ### IDEAS
 - maybe look at options of the stock to see if there is correlation between stocks going down

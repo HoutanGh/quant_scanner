@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from data import fetch_yfinance_data
 import matplotlib.ticker as mticker
 
-def analyse_stock(ticker, date, time, combined_plot=True):
+def analyse_stock(ticker, date, time, target_date=None, combined_plot=True):
     """
     Analyse stock data around a specific date and time.
     
@@ -13,6 +13,7 @@ def analyse_stock(ticker, date, time, combined_plot=True):
     ticker (str): The stock ticker symbol
     date (str): Date in format 'YYYY-MM-DD'
     time (str): Time in format 'HH:MM'
+    target_date (str): Optional target date to override the date range calculation
     combined_plot (bool): Whether to show price and volume in a combined plot
     
     Returns:
@@ -20,9 +21,29 @@ def analyse_stock(ticker, date, time, combined_plot=True):
     """
     
     # Parse the input date and calculate date range
-    target_date = pd.to_datetime(date).date()
-    start_date = target_date - timedelta(days=1)
-    end_date = target_date + timedelta(days=1)
+    if target_date == None:    
+        target_date = pd.to_datetime(date).date()
+        start_date = target_date - timedelta(days=1)
+        end_date = target_date + timedelta(days=1)
+        # Use original date and time for target line
+        target_datetime = pd.to_datetime(f"{date} {time}")
+        display_date = date
+    else:
+        target_date_parsed = pd.to_datetime(target_date).date()
+        input_date_parsed = pd.to_datetime(date).date()
+        
+        # Check if target_date is within reasonable range of input date
+        date_diff = abs((target_date_parsed - input_date_parsed).days)
+        
+        if date_diff > 3:  # If target_date is more than 3 days from input date
+            print(f"Target date {target_date} is too far from input date {date}. Analysis cancelled.")
+            return None, None
+        else:
+            start_date = target_date_parsed - timedelta(days=1)
+            end_date = target_date_parsed + timedelta(days=1)
+            # Use target_date with original time for target line
+            target_datetime = pd.to_datetime(f"{target_date} {time}")
+            display_date = target_date
     
     # Fetch data (use end_date + 1 to ensure we get all data)
     daily_df, minute_df = fetch_yfinance_data(ticker, str(end_date + timedelta(days=1)))
@@ -37,9 +58,6 @@ def analyse_stock(ticker, date, time, combined_plot=True):
     if day_df.empty:
         print(f"No data available for {ticker} in the specified date range")
         return daily_df, day_df
-    
-    # Create target datetime for marking on the plot
-    target_datetime = pd.to_datetime(f"{date} {time}")
     
     # Calculate cumulative volume for each day
     day_df = day_df.copy()
@@ -66,7 +84,7 @@ def analyse_stock(ticker, date, time, combined_plot=True):
         
         # Add bold vertical line at target time
         ax1.axvline(x=target_datetime, color='white', linestyle='--', linewidth=3, alpha=0.9, 
-                   label=f'Target Time ({date} {time})')
+                   label=f'Target Time ({display_date} {time})')
         ax1.axvline(x=target_datetime, color='darkgray', linestyle='--', linewidth=2, alpha=0.7)
 
         # Format x-axis with evenly spaced grid
@@ -100,7 +118,7 @@ def analyse_stock(ticker, date, time, combined_plot=True):
         lines_2, labels_2 = ax2.get_legend_handles_labels()
         ax1.legend(lines_1 + lines_2, labels_1 + labels_2, loc='upper left')
         
-        plt.title(f"{ticker} Price and Volume around {date} {time}")
+        plt.title(f"{ticker} Price and Volume around {display_date} {time}")
         plt.tight_layout()
         plt.show()
     
@@ -120,11 +138,11 @@ def analyse_stock(ticker, date, time, combined_plot=True):
         
         ax.plot(day_df['plot_date'], day_df['close'], label='Close Price', linewidth=1.5)
         ax.axvline(x=target_datetime, color='white', linestyle='--', linewidth=3, alpha=0.9, 
-                   label=f'Target Time ({date} {time})')
+                   label=f'Target Time ({display_date} {time})')
         ax.axvline(x=target_datetime, color='darkgray', linestyle='--', linewidth=2, alpha=0.7)
         ax.set_xlabel('Date and Time')
         ax.set_ylabel('Price')
-        ax.set_title(f"{ticker} Price around {date} {time}")
+        ax.set_title(f"{ticker} Price around {display_date} {time}")
         
         # Format axes with evenly spaced grid
         ax.xaxis.set_major_locator(mdates.HourLocator(interval=6))
@@ -159,11 +177,11 @@ def analyse_stock(ticker, date, time, combined_plot=True):
             alpha=0.7
         )
         ax.axvline(x=target_datetime, color='white', linestyle='--', linewidth=3, alpha=0.9, 
-                   label=f'Target Time ({date} {time})')
+                   label=f'Target Time ({display_date} {time})')
         ax.axvline(x=target_datetime, color='darkgray', linestyle='--', linewidth=2, alpha=0.7)
         ax.set_ylabel('Volume', color='green')
         ax.set_xlabel('Date and Time')
-        ax.set_title(f"{ticker} Volume around {date} {time}")
+        ax.set_title(f"{ticker} Volume around {display_date} {time}")
         
         # Format axes with evenly spaced grid
         ax.xaxis.set_major_locator(mdates.HourLocator(interval=6))
@@ -210,4 +228,4 @@ if __name__ == "__main__":
     print(get_ticker_info(stock))
     ticker, date, time = get_ticker_info(stock)
     if ticker:
-        analyse_stock(ticker, date, time)
+        analyse_stock(ticker, date, time, target_date="2025-07-03", combined_plot=True)
