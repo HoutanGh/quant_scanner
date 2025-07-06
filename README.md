@@ -34,6 +34,14 @@
 ### IDEAS
 - maybe look at options of the stock to see if there is correlation between stocks going down
 - change stock price to %change? or somehow normalise so can compare stocks?
+
+### Simlutaing stock prices
+- has real-time trendlines
+- monte carlo base
+- different moving averages that slighlt probability increases or decreases depending if the stock is going up or down
+- the probability changes base on hitting trendline 
+- top and bottom bar prices trendlines (will need IKBR api)
+- start with just taking stock price at a certain time and basic monte carlo over the actual stock price
 ---
 
 - different files for different models
