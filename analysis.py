@@ -224,8 +224,11 @@ def get_ticker_info(ticker):
 
 if __name__ == "__main__":
     # Example usage when script is run directly
-    stock = "VUZI"
-    print(get_ticker_info(stock))
-    ticker, date, time = get_ticker_info(stock)
+    # stock = "NLSP"
+    # print(get_ticker_info(stock))
+    # ticker, date, time = get_ticker_info(stock)
+    ticker = "NLSP"
+    date = "2025-07-04"
+    time = "09:30"
     if ticker:
-        analyse_stock(ticker, date, time, target_date="2025-07-03", combined_plot=True)
+        analyse_stock(ticker, date, time, target_date="2025-07-07", combined_plot=True)
