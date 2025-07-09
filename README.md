@@ -16,6 +16,7 @@
 - [ ] moving average models
 - [ ] BS models
 - [ ] model that sees if the stock goes up in the first 5mins, 10mins, 15mins, 30mins, 1 hour then incrememts, not sure
+- [ ] maybe model that goes through the stock list and sees what the bottoming prices are for each stock, then can notify if the stock reaches these prices
 
 ### discord.py
 - [x] obtain the list of stocks posted in discord channel
