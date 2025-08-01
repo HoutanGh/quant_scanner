@@ -1,5 +1,6 @@
 - [ ] model for guessing which stocks are going up
 - [ ] dashboard UI
+- [ ] strategy detecter
 
 ### data.py
 - data of stocks put into the format you get when you use IKBR API
