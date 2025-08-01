@@ -1,3 +1,6 @@
+- [ ] model for guessing which stocks are going up
+- [ ] dashboard UI
+
 ### data.py
 - data of stocks put into the format you get when you use IKBR API
 - data is split into daily and minute dfs so that we can use different time ranges accurately
